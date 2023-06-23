@@ -72,17 +72,17 @@ When we describe the system, first we must provide it the rules that calculate c
 data members from other members, like the "net amount = quantity * rate" we already mentioned.
 
 In mathematics, this also implies two other rules: "quantity = net amount / rate" and
-"rate = net amount / quantity", but deducting them automatically is beyond the scope of this
+"rate = net amount / quantity", but deducing them automatically is beyond the scope of this
 basic solver, so now we have to provide them manually.
 
 However, if we have these (and the default values), we indeed have everything we need, and the
 algorithm goes like this:
 
 1. If we ran out of applicable rules, then the system is underspecified and we can fail
-2. Try all calculation rule:
+2. Try all calculation rules:
     - If all its prerequisites are known, then calculate a new member field value
     - If there is already a value for that field, and it's different, then we got an invalid dataset
-    - Discard the rule, as it makes no sense to calculate it again in the future
+    - Discard the rule, as it would make no sense to calculate it again in the future
 3. Repeat 2 until they solve some new member fields (the number of unknown fields decreases)
 4. If the number of unknown fields is 0, then we found a solution and we succeeded
 5. Otherwise apply the first default value whose field is still unknown

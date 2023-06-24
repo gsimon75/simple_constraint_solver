@@ -25,7 +25,10 @@ class ConstraintSystem {
     };
 
     static solve(input) {
-        const obj = Object.assign(Object.fromEntries(this.FIELDS.map(f => [f, NaN])), input);
+        const obj = Object.fromEntries(this.FIELDS.map(f => [
+            f,
+            isNaN(input[f]) ? NaN : input[f]
+        ]));
         const pobj = new Proxy(obj, ConstraintSystem.HANDLER);
         const cs = [ ...this.CONSTRAINTS ];
         let prev_NaNs = -1;
@@ -60,7 +63,7 @@ class ConstraintSystem {
 
         // try to solve it without using defaults
         if (solve_pass()) {
-            return obj;
+            return Object.assign(input, obj);
         }
         // try to solve it by applying the defaults one by one
         for (const [k, v] of Object.entries(this.DEFAULTS)) {
@@ -69,7 +72,7 @@ class ConstraintSystem {
                 obj[k] = v;
                 // console.log(`Applying default to .${k}`);
                 if (solve_pass()) {
-                    return obj;
+                    return Object.assign(input, obj);
                 }
             }
         }
